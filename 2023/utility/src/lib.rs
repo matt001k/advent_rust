@@ -19,3 +19,17 @@ pub mod input {
         }
     }
 }
+
+pub mod math {
+    use std::ops::Add;
+    use std::default::Default;
+    pub fn get_sum<T>(data: Vec<T>) -> T where
+        T: Add<T, Output = T> + Default + Copy
+    {
+        let mut ret: T = Default::default();
+        for val in data.iter() {
+            ret = ret + *val;
+        }
+        ret
+   }
+}

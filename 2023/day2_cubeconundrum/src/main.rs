@@ -1,4 +1,5 @@
 use utility::input::data_input::text_input;
+use utility::math;
 use std::collections::HashMap;
 use std::default::Default;
 
@@ -44,14 +45,18 @@ fn main() {
     let exit: String = String::from("exit");
     println!("Please Input The Required Calibration Data \
              And Type \"{}\" Once Done:", exit);
-    let v: Vec<u32> = Vec::from(get_games(&text_input(exit)));
-    println!("{:?}", v);
+    let data = text_input(exit);
+    let v: Vec<u32> = Vec::from(get_games(&data));
+    println!("{:?}", math::get_sum::<u32>(v));
+    let v: Vec<u32> = Vec::from(get_powers(&data));
+    println!("{:?}", math::get_sum::<u32>(v));
 }
 
 fn get_games(data: &String) -> Vec<u32> {
     let cube_lut: Cube = Cube::new(14, 12, 13);
     let mut v: Vec<u32> = Vec::new();
     for (i, line) in data.lines().enumerate() {
+        let mut found = 1;
         let mut val: u32 = 0;
         let mut cube: Cube = Default::default();
         for (j, c) in line.chars().enumerate() {
@@ -59,9 +64,54 @@ fn get_games(data: &String) -> Vec<u32> {
                 if val != 0 {
                     val *= 10;
                 }
-                val |= c as u32 - '0' as u32;
-                println!("{:?}", val);
-            } else if c != ' ' || c != ',' || c != ';' {
+                val += c as u32 - '0' as u32;
+            } else if c != ' ' && c != ',' && c != ';' {
+                for key in cube_lut.map.keys() {
+                    let mut k = 0;
+                    for letter in key.chars() {
+                        if line.as_bytes()[j + k] == letter as u8 {
+                            k += 1;
+                        } else {
+                            break;
+                        }
+                        if k == key.len() {
+                            cube.map.insert(key, val);
+                        }
+                    }
+                    let iter = cube_lut.map.keys();
+                    for key in iter {
+                        if cube.value(key) > cube_lut.value(key) {
+                            found = 0;
+                            break;
+                        }                         
+                    }
+                }
+                val = 0;
+            }
+            if found == 0 {
+                break;
+            }
+        }
+        if found == 1 {
+            v.push((i + 1) as u32);
+        }
+    }
+    v
+}
+
+fn get_powers(data: &String) -> Vec<u32> {
+    let cube_lut: Cube = Default::default();
+    let mut v: Vec<u32> = Vec::new();
+    for line in data.lines() {
+        let mut val: u32 = 0;
+        let mut cube: Cube = Default::default();
+        for (j, c) in line.chars().enumerate() {
+            if c <= '9' && c >= '0' {
+                if val != 0 {
+                    val *= 10;
+                }
+                val += c as u32 - '0' as u32;
+            } else if c != ' ' && c != ',' && c != ';' {
                 for key in cube_lut.map.keys() {
                     let mut k = 0;
                     for letter in key.chars() {
@@ -72,21 +122,27 @@ fn get_games(data: &String) -> Vec<u32> {
                         }
                         if k == key.len() {
                             let current = cube.value(key);
-                            println!("{}: {:?}", key, current);
-                            cube.map.insert(key, current + val);
+                            if val > current {
+                                cube.map.insert(key, val);
+                            }
                         }
                     }
                 }
                 val = 0;
-            }        }
-        let iter = cube_lut.map.keys();
-        for key in iter {
-            if cube.value(key) > cube_lut.value(key) {
-                break
-            } else if *key == "green" {
-                v.push(i as u32);
             }
         }
+        let mut power = 0;
+        let iter = cube.map.keys();
+        for key in iter {
+            if power != 0 {
+                power *= cube.value(key);
+            }
+            else {
+                power = cube.value(key);
+            }
+
+        }                         
+        v.push(power);
     }
     v
 }

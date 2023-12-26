@@ -1,1 +1,1 @@
-/root/Projects/Personal/RustAdvent/2023/day1_trebuchet/target/debug/day1_trebuchet: /root/Projects/Personal/RustAdvent/2023/day1_trebuchet/src/main.rs /root/Projects/Personal/RustAdvent/2023/utility/src/lib.rs
+/home/krauseglobal/Projects/advent/advent_rust/2023/day1_trebuchet/target/debug/day1_trebuchet: /home/krauseglobal/Projects/advent/advent_rust/2023/day1_trebuchet/src/main.rs /home/krauseglobal/Projects/advent/advent_rust/2023/utility/src/lib.rs
