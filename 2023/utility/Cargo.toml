@@ -1,0 +1,10 @@
+[package]
+name = "utility"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "utility"
+version = "0.1.0"
+edition = "2021"
+crate-type = ["lib"]

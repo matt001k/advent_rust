@@ -1,0 +1,1 @@
+/root/Projects/Personal/RustAdvent/2023/day2_cubeconundrum/target/debug/day2_cubeconundrum: /root/Projects/Personal/RustAdvent/2023/day2_cubeconundrum/src/main.rs /root/Projects/Personal/RustAdvent/2023/utility/src/lib.rs
