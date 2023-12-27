@@ -1,4 +1,5 @@
 use utility::input::data_input::text_input;
+use utility::math;
 
 fn main() {
     let exit: String = String::from("exit");
@@ -6,7 +7,7 @@ fn main() {
              And Type \"{}\" Once Done:", exit);
 
     println!("The Sum of The Calibration Values is: {}",
-             get_sum(get_values(&text_input(exit))));
+             math::get_sum::<u32>(get_values(&text_input(exit))));
 }
 
 fn get_values(data: &String) -> Vec<u32> {
@@ -54,10 +55,3 @@ fn assign_values(number: i16, val1: &mut i16, val2: &mut i16) {
     }
 }
 
-fn get_sum(data: Vec<u32>) -> u64 {
-    let mut ret: u64 = 0;
-    for val in data.iter() {
-        ret += *val as u64;
-    }
-    ret
-}
